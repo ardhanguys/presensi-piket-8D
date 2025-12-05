@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presensi Piket Kelas</title>
+
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- SweetAlert2 FIXED -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    body {
+      background: #f5f7fa;
+      font-family: Arial, sans-serif;
+    }
+    .form-container {
+      max-width: 480px;
+      margin: auto;
+      margin-top: 50px;
+      padding: 25px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+    }
+    h4 {
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="form-container">
+      <h4 class="text-center mb-4">Presensi Piket Kelas</h4>
+
+      <form id="presensi-form">
+        
+        <!-- LIST NAMA SISWA -->
+        <div class="form-group">
+          <label for="nama">Nama Siswa:</label>
+          <select class="form-control" name="nama" id="nama" required>
+            <option value="" hidden>Pilih nama</option>
+
+            <option>ABDUL MAJID KHALID AL AMOUDI</option>
+            <option>ABHISHOKA CHAIDAR ASHARDI</option>
+            <option>ABIMANYU DAUD MAULANA RACHFI</option>
+            <option>AHMAD RAUF ZULHUSNI KARIM</option>
+            <option>ALZAM ABBAD RABBANI</option>
+            <option>ANTASENA YAHYA</option>
+            <option>ARSAKHA ALFATIH FAHLEVI</option>
+            <option>BINTANG SAMUDRA INDRAYANA</option>
+            <option>FARA SANDI PUTERA RAMADHANI</option>
+            <option>HAFIZH HIDAYATULLAH PUTRA ARASYIT</option>
+            <option>ICHSAN MURTAQI MAKARIM</option>
+            <option>KEYSHA ADHITYA CAHYONO</option>
+            <option>KIANO CARLO ARARYA JUSTICE</option>
+            <option>KRISHNA AL FARISYI RAMADHAN FATAHILLAH</option>
+            <option>LUTFI RAHMAD KURNIAWAN</option>
+            <option>MORENO SHAKIEL NUGROHO</option>
+            <option>MUHAMMAD ADAM GHAIZAN YUSRO</option>
+            <option>MUHAMMAD ARDHAN AL HABIBI</option>
+            <option>MUHAMMAD ASYRAF FAIZAN AZHAR</option>
+            <option>MUHAMMAD ATHAR BAHII</option>
+            <option>MUHAMMAD DANIAL HIBATULLAH</option>
+            <option>MUHAMMAD HANIF AZIZI</option>
+            <option>MUHAMMAD RIZAL GIBRAN</option>
+            <option>MUHAMMAD TAMMA AL KAFF</option>
+            <option>MUHAMMAD ZAKAA ZAJWAN</option>
+            <option>MUKHAMMAD SYAILENDRA AL KHAWARIZMI</option>
+            <option>MUMTAAZ SHAUMI RAMADHAN</option>
+            <option>RAFAN DIAZ PUTRA ATMADIE</option>
+            <option>RAFASSYA ATHARRAYHAN ALFAREZEL</option>
+            <option>SABIL KEANO HAFIY ABIDIN</option>
+            <option>TSAQIIF</option>
+            <option>ZAMZAMY MUHAMMAD SYIFAA ULLOH</option>
+
+          </select>
+        </div>
+
+        <!-- TANGGAL AUTO -->
+        <div class="form-group">
+          <label for="tanggal">Tanggal:</label>
+          <input class="form-control" type="text" id="tanggal" name="tanggal" readonly>
+        </div>
+
+        <!-- TUGAS TEKS -->
+        <div class="form-group">
+          <label for="tugas">Tugas Piket:</label>
+          <input class="form-control" type="text" name="tugas" id="tugas" placeholder="Contoh: Menyapu, Merapikan meja" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Kirim</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwF85So6DcNSINRgR1zXFAFOOrb2D2bSsb5MdGdIZSzq6Ljr9EOpSVGxyqCEFsrWmBTYw/exec";
+
+    const form = document.getElementById("presensi-form");
+
+    // Set tanggal otomatis
+    let today = new Date();
+    let yyyy = today.getFullYear();
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let dd = String(today.getDate()).padStart(2, '0');
+    document.getElementById("tanggal").value = `${yyyy}-${mm}-${dd}`;
+
+    // Submit Form
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      let formData = new FormData(form);
+
+      fetch(scriptURL, { method: "POST", body: formData })
+        .then(() => {
+          Swal.fire({
+            title: "Berhasil!",
+            text: "Presensi berhasil dikirim.",
+            icon: "success",
+            confirmButtonText: "OK"
+          });
+          form.reset();
+          // reset tanggal
+          document.getElementById("tanggal").value = `${yyyy}-${mm}-${dd}`;
+        })
+        .catch(() => {
+          Swal.fire({
+            title: "Gagal",
+            text: "Terjadi kesalahan. Coba lagi.",
+            icon: "error",
+            confirmButtonText: "OK"
+          });
+        });
+    });
+  </script>
+
+</body>
+</html>
